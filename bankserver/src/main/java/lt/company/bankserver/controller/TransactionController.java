@@ -16,41 +16,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lt.company.bankserver.exceptions.TransactionNotFound;
-import lt.company.bankserver.model.Income;
-import lt.company.bankserver.service.IncomesService;
+import lt.company.bankserver.model.Transaction;
 import lt.company.bankserver.service.MapValidationErrorService;
+import lt.company.bankserver.service.TransactionService;
 
 @RestController
-@RequestMapping("/api/incomes")
-public class IncomeController {
-
-	@Autowired
-	private IncomesService incomeService;
+@RequestMapping("/api/transaction")
+public class TransactionController {
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
+	@Autowired
+	private TransactionService transactionService;
+	
 	@GetMapping("/{number}")
-	public List<Income> getIncomesByNumber(@PathVariable("number") String number, Principal principal) {
-		
-		List<Income> result = incomeService.getAllIncomeByAccountNumber(number, principal.getName());
-		if (result.size() == 0) {
-			throw new TransactionNotFound("Not found incomes");
-		}
-		return result;	
+	public List<Transaction> getTransactionByNumber(Principal principal, @PathVariable("number") String number) {
+		return transactionService.getAllTransactionsByAccountNumber(number, principal.getName());		
 	}
 	
 	@PostMapping("/{number}")
-	public ResponseEntity<?> addIncome(@Valid @RequestBody Income income, @PathVariable String number, BindingResult result, Principal principal) {
+	public ResponseEntity<?> addTransactionToAccount(@Valid @RequestBody Transaction transaction, @PathVariable String number, BindingResult result, Principal principal) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if (errorMap != null)
 			return errorMap;
+		System.out.println("Add transaction to: " + principal.getName());
+		Transaction newTransaction = transactionService.addTransactionToAccount(transaction, number, principal.getName());
+		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
 		
-		System.out.println("Add income method: " + principal.getName());
-		Income incomeNew = incomeService.addIncomeToAccount(income, number, principal.getName());
-		return new ResponseEntity<Income>(incomeNew, HttpStatus.CREATED);
 	}
-	
-	
+
 }

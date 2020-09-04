@@ -42,11 +42,7 @@ public class Account {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="account", fetch = FetchType.LAZY)
-	private List<Expenses> expenses = new ArrayList<>();
-	
-	@JsonIgnore
-	@OneToMany(mappedBy="account", fetch = FetchType.LAZY)
-	private List<Income> incomes = new ArrayList<>();
+	private List<Transaction> transactions = new ArrayList<>();
 	
 	public Account() {
 		super();
@@ -110,31 +106,19 @@ public class Account {
 		this.updated_At = new Date();
 	}
 	
-	public void addExpenses(Expenses expense) {
-		this.expenses.add(expense);
-		expense.setAccount(this);
+	public List<Transaction> getTransactions() {
+		return transactions;
 	}
 
-	public List<Expenses> getExpenses() {
-		return expenses;
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
-	public void setExpenses(List<Expenses> expenses) {
-		this.expenses = expenses;
+	public void addTransaction(Transaction transaction) {
+		this.transactions.add(transaction);
+		transaction.setAccount(this);
 	}
 
-	public void addIncome(Income income) {
-		this.incomes.add(income);
-		income.setAccount(this);
-	}
-	
-	public List<Income> getIncomes() {
-		return incomes;
-	}
-
-	public void setIncomes(List<Income> incomes) {
-		this.incomes = incomes;
-	}
 	
 	
 

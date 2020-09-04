@@ -1,6 +1,6 @@
 package lt.company.bankserver.model;
 
-public enum ExpenseCategory {
+public enum TransactionCategory {
 	
 	RESTAURANTS,
 	UTILITIES,
@@ -9,5 +9,8 @@ public enum ExpenseCategory {
 	SERVICES,
 	HEALTH,
 	SHOPPING,
+	SALARY,
+	FROMCARD,
+	PAYMENT
 
 }
