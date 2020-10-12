@@ -62,6 +62,17 @@ public class User implements UserDetails {
 	public User() {
 	}
 	
+	public User(
+			@Email(message = "Username needs to be an e-mail") @NotBlank(message = "Username is required") String username,
+			@NotBlank(message = "Fullname is required") String fullName,
+			@NotBlank(message = "Password is required") String password, String confirmPassword) {
+		super();
+		this.username = username;
+		this.fullName = fullName;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+	}
+
 	public Long getId() {
 		return id;
 	}
