@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,10 +46,17 @@ public class AccountController {
 	}
 	
 	@GetMapping("/all")
-	public Iterable<Account> getAllUserAccounts(Principal principal) {
+	public ResponseEntity<Iterable<Account>> getAllUserAccounts(Principal principal) {
 		System.out.println("Principal getName method: " + principal.getName());
 		User user = userService.getByUsername(principal.getName());
-		return accountService.getAllAccounts(user);
+		Iterable<Account> listOfAccounts = accountService.getAllAccounts(user);
+		return new ResponseEntity<Iterable<Account>>(listOfAccounts, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{number}")
+	public ResponseEntity<Account> getAccountByNumber(Principal principal, @PathVariable String number) {
+		Account account = accountService.getAccountByNumber(number, principal.getName());
+		return new ResponseEntity<Account>(account, HttpStatus.OK);
 	}
 
 }

@@ -47,6 +47,12 @@ public class Account {
 	public Account() {
 		super();
 	}
+	
+	public Account(String number, Double balance) {
+		super();
+		this.number = number;
+		this.balance = balance;
+	}
 
 	public Long getId() {
 		return id;

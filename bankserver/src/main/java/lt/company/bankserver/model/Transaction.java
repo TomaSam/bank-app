@@ -35,6 +35,14 @@ public class Transaction {
 	public Transaction() {
 		super();
 	}
+	
+	public Transaction(TransactionType type, Double amount, String description, TransactionCategory category) {
+		super();
+		this.type = type;
+		this.amount = amount;
+		this.description = description;
+		this.category = category;
+	}
 
 	public Long getId() {
 		return id;

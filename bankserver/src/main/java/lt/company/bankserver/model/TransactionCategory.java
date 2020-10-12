@@ -11,6 +11,7 @@ public enum TransactionCategory {
 	SHOPPING,
 	SALARY,
 	FROMCARD,
-	PAYMENT
+	PAYMENT,
+	FROMTOOWNER
 
 }

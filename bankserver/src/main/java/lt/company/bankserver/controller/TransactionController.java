@@ -45,5 +45,29 @@ public class TransactionController {
 		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
 		
 	}
+	
+	@GetMapping("/{number}/type/{type}")
+	public List<Transaction> getTransactionByType(Principal principal, @PathVariable("number") String number, @PathVariable("type") String type) {
+		return transactionService.getTransactionsByType(principal.getName(), number, type);				
+	}
+	
+	@GetMapping("/{number}/{category}")
+	public List<Transaction> getTransactionByCategory(Principal principal, @PathVariable("number") String number, @PathVariable("category") String category) {
+		return transactionService.getTransactionsByCategory(principal.getName(), number, category);		
+	}
+	
+	@PostMapping("/{number}/{nextNumber}")
+	public ResponseEntity<?> transactionBetweenAccounts(@Valid @RequestBody Transaction transaction, 
+			@PathVariable String number, @PathVariable String nextNumber, BindingResult result, Principal principal) {
+		
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if (errorMap != null)
+			return errorMap;
+		Transaction newTransaction = transactionService.transactionBetweenOwnersAccounts(transaction, number, nextNumber, principal.getName());
+		
+		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
+	}
+	
+
 
 }

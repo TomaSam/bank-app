@@ -48,5 +48,9 @@ public class AccountService {
 		}
 		
 	}
+	
+	public Account getAccountByNumber(String number, String username) {
+		return accountRepository.getByNumber(number);
+	}
 
 }
