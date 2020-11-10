@@ -1,6 +1,4 @@
 import React from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../css/style.css';
 import SideNav from './SideNav';
 import Login from './Login';
 

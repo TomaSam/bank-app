@@ -22,9 +22,9 @@ import lt.company.bankserver.service.AccountService;
 import lt.company.bankserver.service.MapValidationErrorService;
 import lt.company.bankserver.service.UserService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/account")
-@CrossOrigin
 public class AccountController {
 	
 	@Autowired

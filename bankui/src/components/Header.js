@@ -1,22 +1,17 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/style.css';
-import 'bootstrap/dist/js/bootstrap.js';
+import { Navbar, NavbarBrand } from 'reactstrap';
 
 function Header() {
     return (
-        <header className="jumbotron">
+        <>
+            <Navbar dark expand="md">
                 <div className="container">
-                    <div className="row row-header">
-                        <div className="col-12 col-sm-6">
-                            <h1>Bank App</h1>
-                            <p>Send and get money all over the world!</p>
-                        </div>
-                        <div className="col-12 col-sm">
-                        </div>
-                    </div>
+					<NavbarBrand className="mr-auto" href="/">
+                        <h2>Bank App</h2>
+					</NavbarBrand>   
                 </div>
-        </header>
+            </Navbar>
+        </>
     )
 }
 

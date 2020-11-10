@@ -1,4 +1,4 @@
-# Bank application
+# Bank application (in progress)
 
 ## Features
 
