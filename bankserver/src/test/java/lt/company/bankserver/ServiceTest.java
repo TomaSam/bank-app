@@ -29,15 +29,15 @@ public class ServiceTest {
 
     @Test
     public void createNewAccountTest() throws Exception {    
-        accountService.saveOrUpdateAccount(new Account("testAccount1", 100.00), "usertest");
-        assertEquals(accountService.getAccountByNumber("testAccount1", "usertest").getBalance(), 100.00);
+        accountService.saveOrUpdateAccount("usertest");
+        assertEquals(accountService.getAccountByNumber("testAccount1", "usertest").getBalance(), 0.00);
     }
     
     @Test
     public void addTransactionToAccountTest() throws Exception {
     	Transaction transaction1 = new Transaction(TransactionType.DEBIT, 50.00, "shopping", TransactionCategory.SHOPPING);
-    	Account account1 = new Account("testAccount1", 100.00);
-    	accountService.saveOrUpdateAccount(account1, "usertest");
+    	Account account1 = new Account();
+    	accountService.saveOrUpdateAccount("usertest");
     	transactionService.addTransactionToAccount(transaction1, "testAccount1", "usertest");
     	assertEquals(account1.getBalance(), 50.00);
     	

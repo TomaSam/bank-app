@@ -12,6 +12,10 @@ class UserService {
     return axios.get(`http://localhost:8080/api/transaction/${number}`, { headers: AuthHeader() })
   }
 
+  getAccountByNumber(number) {
+    return axios.get(`http://localhost:8080/api/account/${number}`, { headers: AuthHeader() })
+  }
+
 }
 
 export default new UserService();

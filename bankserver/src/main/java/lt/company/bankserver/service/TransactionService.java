@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lt.company.bankserver.exceptions.AccountNotFoundException;
 import lt.company.bankserver.model.Account;
 import lt.company.bankserver.model.Transaction;
 import lt.company.bankserver.model.TransactionCategory;
@@ -35,13 +34,13 @@ public class TransactionService {
 	
 	public Transaction addTransactionToAccount(Transaction transaction, String number, String username) {
 		
-		if (transaction.getId() != null) {
-			Transaction existingTransaction = transactionRepository.findById(transaction.getId()).get();
-			
-			if (existingTransaction != null && (!existingTransaction.getAccount().getNumber().equals(number))) {
-				throw new AccountNotFoundException("Account not found in profile");
-			}
-		}
+//		if (transaction.getId() != null) {
+//			Transaction existingTransaction = transactionRepository.findById(transaction.getId()).get();
+//			
+//			if (existingTransaction != null && (!existingTransaction.getAccount().getNumber().equals(number))) {
+//				throw new AccountNotFoundException("Account not found in profile");
+//			}
+//		}
 			
 			Account account = accountRepository.getByNumber(number);
 			account.addTransaction(transaction);

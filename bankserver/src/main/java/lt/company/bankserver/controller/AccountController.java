@@ -37,24 +37,20 @@ public class AccountController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping
-	public ResponseEntity<?> createNewAccount(@Valid @RequestBody Account account, BindingResult result, Principal principal) {
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if (errorMap != null)
-			return errorMap;
-		Account account1 = accountService.saveOrUpdateAccount(account, principal.getName());
+	public ResponseEntity<?> createNewAccount(Principal principal) {
+		Account account1 = accountService.saveOrUpdateAccount(principal.getName());
 		return new ResponseEntity<Account>(account1, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/all")
 	public ResponseEntity<Iterable<Account>> getAllUserAccounts(Principal principal) {
-		System.out.println("Principal getName method: " + principal.getName());
 		User user = userService.getByUsername(principal.getName());
 		Iterable<Account> listOfAccounts = accountService.getAllAccounts(user);
 		return new ResponseEntity<Iterable<Account>>(listOfAccounts, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{number}")
-	public ResponseEntity<Account> getAccountByNumber(Principal principal, @PathVariable String number) {
+	public ResponseEntity<?> getAccountByNumber(@Valid @PathVariable String number, Principal principal) {
 		Account account = accountService.getAccountByNumber(number, principal.getName());
 		return new ResponseEntity<Account>(account, HttpStatus.OK);
 	}

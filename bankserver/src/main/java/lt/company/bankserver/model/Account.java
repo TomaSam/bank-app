@@ -28,7 +28,7 @@ public class Account {
 	@Column(updatable = false, unique = true)
 	private String number;
 	
-	private Double balance;
+	private Double balance = 0.00;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(updatable = false)
@@ -45,13 +45,9 @@ public class Account {
 	private List<Transaction> transactions = new ArrayList<>();
 	
 	public Account() {
+		
 		super();
-	}
-	
-	public Account(String number, Double balance) {
-		super();
-		this.number = number;
-		this.balance = balance;
+		this.number = AccountNumberGenerator.generateAccountNumber();
 	}
 
 	public Long getId() {

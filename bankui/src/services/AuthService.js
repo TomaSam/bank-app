@@ -1,30 +1,26 @@
 import axios from "axios";
 
 class AuthService {
+
   login(loginRequest) {
     return axios.post(`http://localhost:8080/api/users/login`, loginRequest)
       .then(response => {
-        console.log("AuthService response data token", response.data.token);
+        console.log("AuthService Login response data", response.data.token);
         if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
-        console.log("AuthService response data", response.data);
+        console.log("AuthService Login response data", response.data);
         return response.data;
       });
   }
 
-//   logout() {
-//     localStorage.removeItem("user");
-//   }
+  logout() {
+    localStorage.removeItem("user");
+  }
 
-//   register(username, fullName, password) {
-//     return axios
-//     .post(API_URL + "register", {
-//       username,
-//       fullName,
-//       password
-//     });
-//   }
+  register(registerRequest) {
+    return axios.post(`http://localhost:8080/api/users/register`, registerRequest);
+  }
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
