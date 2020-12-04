@@ -12,6 +12,6 @@ public enum TransactionCategory {
 	SALARY,
 	FROMCARD,
 	PAYMENT,
-	FROMTOOWNER
+	INNERTRANSFER
 
 }

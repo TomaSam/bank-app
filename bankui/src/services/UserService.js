@@ -20,12 +20,12 @@ class UserService {
     return axios.get(`http://localhost:8080/api/transaction/${number}`, { headers: AuthHeader() });
   }
 
-  addTransaction(transaction, number) {
-    return axios.post(`http://localhost:8080/api/transaction/${number}`, transaction, { headers: AuthHeader() });
-  }
+  // addTransaction(transaction, number) {
+  //   return axios.post(`http://localhost:8080/api/transaction/${number}`, transaction, { headers: AuthHeader() });
+  // }
 
-  transferToAccount(transaction, number, nextNumber) {
-    return axios.post(`http://localhost:8080/api/transaction/${number}/${nextNumber}`, transaction, { headers: AuthHeader() });
+  transferBetweenAccounts(transaction, senderNumber, recipientNumber) {
+    return axios.post(`http://localhost:8080/api/transaction/${senderNumber}/${recipientNumber}`, transaction, { headers: AuthHeader() });
   }
 
 }

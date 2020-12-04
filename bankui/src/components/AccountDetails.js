@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import UserService from '../services/UserService';
 import { Jumbotron, Table, Button, ButtonGroup } from 'reactstrap';
 import AuthService from '../services/AuthService';
-import AddMoneyModal from './AddMoneyModal';
-import SendMoneyModal from './SendMoneyModal';
-import TransferToAccountModal from './TransferToAccountModal';
+import TransferModal from './TransferModal';
 
 class AccountDetails extends Component {
     constructor(props) {
@@ -73,9 +71,7 @@ class AccountDetails extends Component {
             </Jumbotron>
             <div className="m-2">
                 <ButtonGroup>
-                    <AddMoneyModal number={accountNumber} refresh={this.refresh} />
-                    <SendMoneyModal number={accountNumber} refresh={this.refresh} />
-                    <TransferToAccountModal number={accountNumber} refresh={this.refresh} />
+                    <TransferModal number={accountNumber} refresh={this.refresh} />
                 </ButtonGroup>
             </div>
             <Table>

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import lt.company.bankserver.model.Account;
 import lt.company.bankserver.model.Transaction;
-import lt.company.bankserver.model.TransactionCategory;
 import lt.company.bankserver.model.TransactionType;
 import lt.company.bankserver.repositories.AccountRepository;
 import lt.company.bankserver.repositories.TransactionRepository;
@@ -32,28 +31,6 @@ public class TransactionService {
 		return result;
 	}
 	
-	public Transaction addTransactionToAccount(Transaction transaction, String number, String username) {
-		
-//		if (transaction.getId() != null) {
-//			Transaction existingTransaction = transactionRepository.findById(transaction.getId()).get();
-//			
-//			if (existingTransaction != null && (!existingTransaction.getAccount().getNumber().equals(number))) {
-//				throw new AccountNotFoundException("Account not found in profile");
-//			}
-//		}
-			
-			Account account = accountRepository.getByNumber(number);
-			account.addTransaction(transaction);
-			if (transaction.getType().equals(TransactionType.DEBIT)) {
-				account.setBalance(account.getBalance() - transaction.getAmount());
-			}
-			else {
-				account.setBalance(account.getBalance() + transaction.getAmount());
-			}
-			
-			return transactionRepository.save(transaction);	
-	}
-	
 	public List<Transaction> getTransactionsByType(String username, String number, String type) {
 		List<Transaction> listType = new ArrayList<>();
 		Account account = accountRepository.getByNumber(number);
@@ -70,16 +47,34 @@ public class TransactionService {
 		return listCategory;
 	}
 	
-	public Transaction transactionBetweenAccounts(Transaction transaction, String number, String nextNumber, String username) {
+//public Transaction addTransactionToAccount(Transaction transaction, String number, String username) {
+//			
+//			Account account = accountRepository.getByNumber(number);
+//			account.addTransaction(transaction);
+//			if (transaction.getType().equals(TransactionType.DEBIT)) {
+//				account.setBalance(account.getBalance() - transaction.getAmount());
+//			}
+//			else {
+//				account.setBalance(account.getBalance() + transaction.getAmount());
+//			}
+//			
+//			return transactionRepository.save(transaction);	
+//	}
+	
+	public void transactionBetweenAccounts(Transaction senderTransaction, String senderNumber, String recipientNumber, String username) {
 		
-		Account account = accountRepository.getByNumber(number);
-		Account nextAccount = accountRepository.getByNumber(nextNumber);
-		account.addTransaction(transaction);
-		if (transaction.getCategory().equals(TransactionCategory.FROMTOOWNER)) {
-			account.setBalance(account.getBalance() - transaction.getAmount());
-			nextAccount.setBalance(nextAccount.getBalance() + transaction.getAmount());
-		}
+		Account senderAccount = accountRepository.getByNumber(senderNumber);
+		Account recipientAccount = accountRepository.getByNumber(recipientNumber);
+		// Add transaction to sender account and change his account balance.
+		senderAccount.addTransaction(senderTransaction);
+		senderAccount.setBalance(senderAccount.getBalance() - senderTransaction.getAmount());
 		
-		return transactionRepository.save(transaction);
+		// Change and add transaction to recipient account and update his account balance.
+		Transaction recipientTransaction = new Transaction(TransactionType.CREDIT, senderTransaction.getAmount(), senderTransaction.getDescription(), senderTransaction.getCategory());
+		recipientAccount.addTransaction(recipientTransaction);
+		recipientAccount.setBalance(recipientAccount.getBalance() + recipientTransaction.getAmount());
+		
+		transactionRepository.save(senderTransaction);
+		transactionRepository.save(recipientTransaction);
 	}
 }

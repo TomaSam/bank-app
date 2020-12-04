@@ -37,16 +37,16 @@ public class TransactionController {
 		return transactionService.getAllTransactionsByAccountNumber(number, principal.getName());		
 	}
 	
-	@PostMapping("/{number}")
-	public ResponseEntity<?> addTransactionToAccount(@Valid @RequestBody Transaction transaction, @PathVariable String number, BindingResult result, Principal principal) {
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if (errorMap != null)
-			return errorMap;
-		System.out.println("Add transaction to: " + principal.getName());
-		Transaction newTransaction = transactionService.addTransactionToAccount(transaction, number, principal.getName());
-		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
-		
-	}
+//	@PostMapping("/{number}")
+//	public ResponseEntity<?> addTransactionToAccount(@Valid @RequestBody Transaction transaction, @PathVariable String number, BindingResult result, Principal principal) {
+//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+//		if (errorMap != null)
+//			return errorMap;
+//		System.out.println("Add transaction to: " + principal.getName());
+//		Transaction newTransaction = transactionService.addTransactionToAccount(transaction, number, principal.getName());
+//		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
+//		
+//	}
 	
 	@GetMapping("/{number}/type/{type}")
 	public List<Transaction> getTransactionByType(Principal principal, @PathVariable("number") String number, @PathVariable("type") String type) {
@@ -58,17 +58,17 @@ public class TransactionController {
 		return transactionService.getTransactionsByCategory(principal.getName(), number, category);		
 	}
 	
-	@PostMapping("/{number}/{nextNumber}")
+	@PostMapping("/{senderNumber}/{recipientNumber}")
 	public ResponseEntity<?> transactionBetweenAccounts(@Valid @RequestBody Transaction transaction, 
-			@PathVariable String number, @PathVariable String nextNumber, BindingResult result, Principal principal) {
-		
+			@PathVariable String senderNumber, @PathVariable String recipientNumber, BindingResult result, Principal principal) {
+
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if (errorMap != null)
 			return errorMap;
-		System.out.println("Transfer transaction from: " + number + "to " + nextNumber);
-		Transaction newTransaction = transactionService.transactionBetweenAccounts(transaction, number, nextNumber, principal.getName());
+		System.out.println("Transfer transaction from: " + senderNumber + "to " + recipientNumber);
+		transactionService.transactionBetweenAccounts(transaction, senderNumber, recipientNumber, principal.getName());
 		
-		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, ModalHeader, ModalBody, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import UserService from '../services/UserService';
 
-export default class TransferToAccountModal extends Component {
+export default class TransferModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,8 +10,8 @@ export default class TransferToAccountModal extends Component {
             type: 'DEBIT',
             amount: 0.0,
             description: '',
-            category: 'FROMTOOWNER',
-            nextNumber: ''
+            category: '',
+            recipientNumber: ''
         }
         this.toggleModal = this.toggleModal.bind(this);
     }
@@ -37,9 +37,9 @@ export default class TransferToAccountModal extends Component {
         };
         console.log("Transaction: " + transaction);
         console.log("Account number: " + this.props.number);
-        console.log("Next number: " + this.state.nextNumber);
+        console.log("Next number: " + this.state.recipientNumber);
 
-        UserService.transferToAccount(transaction, this.props.number, this.state.nextNumber)
+        UserService.transferBetweenAccounts(transaction, this.props.number, this.state.recipientNumber)
         .then(response => {this.props.refresh()})
         .then(response => {this.toggleModal()});
         console.log("userservice: " + transaction);   
@@ -54,14 +54,31 @@ export default class TransferToAccountModal extends Component {
                 <ModalBody>
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
-                            <Label htmlFor="nextNumber">Recipient account</Label>
-                            <Input type="text" id="nextNumber" name="nextNumber" onChange={this.inputChange} />
+                            <Label htmlFor="recipientNumber">Recipient account</Label>
+                            <Input type="text" id="recipientNumber" name="recipientNumber" onChange={this.inputChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="amount">Amount</Label>
                             <Input type="number" id="amount" name="amount"
                                value={this.state.amount} onChange={this.inputChange} />
                         </FormGroup>
+                        <FormGroup>
+                                <Label htmlFor="category">Category</Label>
+                                <Input type="select" id="category" name="category" required defaultValue={'DEFAULT'}
+                                onChange={this.inputChange}>
+                                    <option value="DEFAULT" disabled>Choose Category</option>
+                                    <option value="RESTAURANTS">Restaurants</option>
+                                    <option value="UTILITIES">Utilities</option>
+                                    <option value="TRANSPORT">Transport</option>
+                                    <option value="GROCERIES">Groceries</option>
+                                    <option value="SERVICES">Services</option>
+                                    <option value="HEALTH">Health</option>
+                                    <option value="SHOPPING">Shopping</option>
+                                    <option value="SALARY">Salary</option>
+                                    <option value="PAYMENT">Payment</option>
+                                    <option value="INNERTRANSFER">Transfer between your accounts</option>
+                                </Input>
+                            </FormGroup>
                         <FormGroup>
                             <Label htmlFor="description">Description</Label>
                             <Input type="text" id="description" name="description"

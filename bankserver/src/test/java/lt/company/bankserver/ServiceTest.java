@@ -41,14 +41,14 @@ public class ServiceTest {
         assertEquals( account.getBalance(), 0.00);
     }
     
-    @Test
-    public void addTransactionToAccountTest() throws Exception {
-    	Transaction transaction1 = new Transaction(TransactionType.CREDIT, 50.00, "SalaryForSeptember", TransactionCategory.SALARY);
-
-    	Account testAccount = accountService.saveOrUpdateAccount("usertest");
-    	transactionService.addTransactionToAccount(transaction1, testAccount.getNumber(), "usertest");
-    	assertEquals(testAccount.getBalance(), 50.00);
-    	
-    }
+//    @Test
+//    public void addTransactionToAccountTest() throws Exception {
+//    	Transaction transaction1 = new Transaction(TransactionType.CREDIT, 50.00, "SalaryForSeptember", TransactionCategory.SALARY);
+//
+//    	Account testAccount = accountService.saveOrUpdateAccount("usertest");
+//    	transactionService.addTransactionToAccount(transaction1, testAccount.getNumber(), "usertest");
+//    	assertEquals(testAccount.getBalance(), 50.00);
+//    	
+//    }
 
 }
