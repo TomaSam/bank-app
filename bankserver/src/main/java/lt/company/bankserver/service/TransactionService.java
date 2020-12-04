@@ -70,7 +70,7 @@ public class TransactionService {
 		return listCategory;
 	}
 	
-	public Transaction transactionBetweenOwnersAccounts(Transaction transaction, String number, String nextNumber, String username) {
+	public Transaction transactionBetweenAccounts(Transaction transaction, String number, String nextNumber, String username) {
 		
 		Account account = accountRepository.getByNumber(number);
 		Account nextAccount = accountRepository.getByNumber(nextNumber);

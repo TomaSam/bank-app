@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import UserService from '../services/UserService';
-import { Jumbotron, Table, Button } from 'reactstrap';
+import { Jumbotron, Table, Button, ButtonGroup } from 'reactstrap';
 import AuthService from '../services/AuthService';
-
+import AddMoneyModal from './AddMoneyModal';
+import SendMoneyModal from './SendMoneyModal';
+import TransferToAccountModal from './TransferToAccountModal';
 
 class AccountDetails extends Component {
     constructor(props) {
@@ -11,13 +13,17 @@ class AccountDetails extends Component {
             transactions: [],
             account: {}
         }
+        this.refresh = this.refresh.bind(this);
     }
 
     componentDidMount() {
         const number = this.props.match.params.number;
         this.getTransactions(number);
         this.getAccount(number);
-     
+    }
+
+    refresh() {
+        this.componentDidMount();
     }
 
     getTransactions(number) {  
@@ -53,7 +59,7 @@ class AccountDetails extends Component {
         return (
         <div className="container">
             <div className="m-4">
-                <Button color="secondary" size="lg"><a href="#" onClick={e=>this.logoutHandler(e)}>LogOut</a></Button>
+                <Button color="secondary" size="lg" onClick={e=>this.logoutHandler(e)}>LogOut</Button>
             </div>  
             <Jumbotron className="m-3">    
                 <div className="row">
@@ -65,6 +71,13 @@ class AccountDetails extends Component {
                     </div>
                 </div>
             </Jumbotron>
+            <div className="m-2">
+                <ButtonGroup>
+                    <AddMoneyModal number={accountNumber} refresh={this.refresh} />
+                    <SendMoneyModal number={accountNumber} refresh={this.refresh} />
+                    <TransferToAccountModal number={accountNumber} refresh={this.refresh} />
+                </ButtonGroup>
+            </div>
             <Table>
                 <thead>
                     <tr>

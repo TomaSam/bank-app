@@ -8,14 +8,16 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state={
-            accounts: []
+            accounts: [],
+            
         }
+        this.refresh = this.refresh.bind(this);
     }
 
     componentDidMount() {
         UserService.getUserAccounts().then(
             response => {
-                console.log("UserService response.data:", response.data);
+                //console.log("UserService response.data:", response.data);
                 this.setState({
                     accounts: response.data
                 });
@@ -23,18 +25,27 @@ class Dashboard extends Component {
         )
     }
 
-    logoutHandler =(e) => {
+    refresh() {
+        this.componentDidMount();
+    }
+
+    logoutHandler = () => {
         AuthService.logout();
         this.props.history.push('/login')
     }
 
+    addAccount() {
+        UserService.createNewAccount()
+        .then(response => {this.refresh()});
+    }
+
     render() {
-        console.log("Dashboard render this.state.accounts: ", this.state.accounts);
-        console.log("Name ", this.props.location.state.username);
+        // console.log("Dashboard render this.state.accounts: ", this.state.accounts);
+        // console.log("Name ", this.props.location.state.username);
         return (
-            <div className="container">
+            <div className="container m-4">
                 <div className="m-4">
-                    <Button color="secondary" size="lg"><a href="#" onClick={e=>this.logoutHandler(e)}>LogOut</a></Button>
+                    <Button color="secondary" size="lg" onClick={() => this.logoutHandler()}>LogOut</Button>
                 </div>    
                 <div className="m-4">
                     <h3>Welcome, {this.props.location.state.username}, to dashboard!</h3>
@@ -49,7 +60,10 @@ class Dashboard extends Component {
                         </tr>
                     </thead>
                     <DisplayAccounts accounts={this.state.accounts} />
-                </Table>        
+                </Table>
+                <div>
+                    <Button onClick={() => this.addAccount()}>Add new account</Button>
+                </div>        
             </div>            
         )   
     }

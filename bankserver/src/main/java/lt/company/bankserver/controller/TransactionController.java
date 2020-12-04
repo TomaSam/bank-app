@@ -65,7 +65,8 @@ public class TransactionController {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if (errorMap != null)
 			return errorMap;
-		Transaction newTransaction = transactionService.transactionBetweenOwnersAccounts(transaction, number, nextNumber, principal.getName());
+		System.out.println("Transfer transaction from: " + number + "to " + nextNumber);
+		Transaction newTransaction = transactionService.transactionBetweenAccounts(transaction, number, nextNumber, principal.getName());
 		
 		return new ResponseEntity<Transaction>(newTransaction, HttpStatus.CREATED);
 	}

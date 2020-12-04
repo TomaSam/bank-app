@@ -2,6 +2,8 @@ package lt.company.bankserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.StreamSupport;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import lt.company.bankserver.model.Account;
 import lt.company.bankserver.model.Transaction;
 import lt.company.bankserver.model.TransactionCategory;
 import lt.company.bankserver.model.TransactionType;
+import lt.company.bankserver.repositories.UserRepository;
 import lt.company.bankserver.service.AccountService;
 import lt.company.bankserver.service.TransactionService;
 
@@ -20,6 +23,9 @@ import lt.company.bankserver.service.TransactionService;
 @SpringBootTest
 @Transactional
 public class ServiceTest {
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
     private AccountService accountService;
@@ -30,16 +36,18 @@ public class ServiceTest {
     @Test
     public void createNewAccountTest() throws Exception {    
         accountService.saveOrUpdateAccount("usertest");
-        assertEquals(accountService.getAccountByNumber("testAccount1", "usertest").getBalance(), 0.00);
+        Account account = StreamSupport.stream(accountService.getAllAccounts(userRepository.findByUsername("usertest"))
+        		.spliterator(), false).reduce((first, second) -> second).orElse(null);
+        assertEquals( account.getBalance(), 0.00);
     }
     
     @Test
     public void addTransactionToAccountTest() throws Exception {
-    	Transaction transaction1 = new Transaction(TransactionType.DEBIT, 50.00, "shopping", TransactionCategory.SHOPPING);
-    	Account account1 = new Account();
-    	accountService.saveOrUpdateAccount("usertest");
-    	transactionService.addTransactionToAccount(transaction1, "testAccount1", "usertest");
-    	assertEquals(account1.getBalance(), 50.00);
+    	Transaction transaction1 = new Transaction(TransactionType.CREDIT, 50.00, "SalaryForSeptember", TransactionCategory.SALARY);
+
+    	Account testAccount = accountService.saveOrUpdateAccount("usertest");
+    	transactionService.addTransactionToAccount(transaction1, testAccount.getNumber(), "usertest");
+    	assertEquals(testAccount.getBalance(), 50.00);
     	
     }
 

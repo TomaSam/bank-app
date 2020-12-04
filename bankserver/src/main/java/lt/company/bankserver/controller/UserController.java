@@ -23,9 +23,7 @@ import lt.company.bankserver.payload.LoginRequest;
 import lt.company.bankserver.payload.MessageResponse;
 import lt.company.bankserver.repositories.UserRepository;
 import lt.company.bankserver.security.JwtTokenProvider;
-import lt.company.bankserver.service.MapValidationErrorService;
 import lt.company.bankserver.service.UserService;
-import lt.company.bankserver.validator.UserValidator;
 import static lt.company.bankserver.security.SecurityConstants.TOKEN_PREFIX;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -36,17 +34,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-//	@Autowired
-//	private MapValidationErrorService mapValidationErrorService;
-	
 	@Autowired
 	private JwtTokenProvider tokenProvider;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
-//	@Autowired
-//	private UserValidator userValidator;
 	
 	@Autowired
 	private UserRepository userRepository;
